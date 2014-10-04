@@ -108,10 +108,11 @@ K.each({
         }
         $view->registerJsFile($asset->baseUrl . '/lang/' . $this->clientOptions['langType'] . '.js', ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
         $id = $this->options['id'];
+        $varName = self::PLUGIN_NAME . '_' . str_replace('-', '_', $id);
         $js = "
 KindEditor.ready(function(K) {
     {$preJs};
-    var " . self::PLUGIN_NAME . "_{$id} = K.create('#{$id}'," . Json::encode($this->clientOptions) . ");});
+    var {$varName} = K.create('#{$id}'," . Json::encode($this->clientOptions) . ");});
 ";
         $view->registerJs($js);
     }
