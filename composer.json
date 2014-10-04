@@ -1,0 +1,21 @@
+{
+    "name": "cliff363825/yii2-kindeditor",
+    "description": "KindEditor Widget for Yii2",
+    "type": "yii2-extension",
+    "keywords": ["yii2","kindeditor"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "cliff363825",
+            "email": "cliff_363825@163.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "cliff363825\\kindeditor\\": ""
+        }
+    }
+}
