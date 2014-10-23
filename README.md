@@ -28,4 +28,4 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \cliff363825\kindeditor\AutoloadExample::widget(); ?>```
+<?= \cliff363825\kindeditor\KindEditorWidget::widget(); ?>```
