@@ -9,6 +9,11 @@ use yii\web\Controller;
 class KindEditorBaseController extends Controller
 {
     /**
+     * @var string
+     */
+    public $csrfCookieParam = '_csrfCookie';
+
+    /**
      * file upload max size
      * default: 2MB
      * @var integer
@@ -40,13 +45,12 @@ class KindEditorBaseController extends Controller
     public function init()
     {
         parent::init();
-        $token = Yii::$app->request->post('csrfToken');
-        if (!empty($token)) {
-            if (Yii::$app->request->enableCsrfCookie) {
-                $_COOKIE[Yii::$app->request->csrfParam] = $token;
-            } else {
-                Yii::$app->session->set(Yii::$app->request->csrfParam, $token);
-            }
+        if (($sessionId = Yii::$app->request->post(Yii::$app->session->name)) !== null) {
+            Yii::$app->session->setId($sessionId);
+            Yii::$app->session->open();
+        }
+        if (Yii::$app->request->enableCsrfCookie) {
+            $_COOKIE[Yii::$app->request->csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
         }
     }
 

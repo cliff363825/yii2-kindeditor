@@ -28,4 +28,34 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \cliff363825\kindeditor\KindEditorWidget::widget(); ?>```
+<?= \cliff363825\kindeditor\KindEditorWidget::widget([
+    'name'=>'content',
+    'options'=>[], // html attributes
+    'clientOptions'=>[
+        'width' = '680px',
+        'height' = '350px',
+        'themeType' = 'default', // optional: default, simple, qq
+        'langType' = 'zh_CN', // optional: ar, en, ko, zh_CN, zh_TW
+        ...
+    ],
+]); ?>
+```
+
+or use with a model:
+
+```php
+<?= \cliff363825\kindeditor\KindEditorWidget::widget([
+    'model'=>$model,
+    'attribute'=>'content',
+    'options'=>[], // html attributes
+    'clientOptions'=>[
+        'width' = '680px',
+        'height' = '350px',
+        'themeType' = 'default', // optional: default, simple, qq
+        'langType' = 'zh_CN', // optional: ar, en, ko, zh_CN, zh_TW
+        ...
+    ],
+]); ?>
+```
+
+For full details on usage, see the [documentation](http://kindeditor.net/doc.php).

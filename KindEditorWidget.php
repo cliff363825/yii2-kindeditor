@@ -19,6 +19,11 @@ class KindEditorWidget extends InputWidget
     public $clientOptions = [];
 
     /**
+     * @var string
+     */
+    public $csrfCookieParam = '_csrfCookie';
+
+    /**
      * @var boolean
      */
     public $render = true;
@@ -191,10 +196,9 @@ KindEditor.ready(function(K) {
             }
         }
         $options['extraFileUploadParams'][Yii::$app->request->csrfParam] = Yii::$app->request->getCsrfToken();
+        $options['extraFileUploadParams'][Yii::$app->session->name] = Yii::$app->session->id;
         if (Yii::$app->request->enableCsrfCookie) {
-            $options['extraFileUploadParams']['csrfToken'] = $_COOKIE[Yii::$app->request->csrfParam];
-        } else {
-            $options['extraFileUploadParams']['csrfToken'] = Yii::$app->session->get(Yii::$app->request->csrfParam);
+            $options['extraFileUploadParams'][$this->csrfCookieParam] = $_COOKIE[Yii::$app->request->csrfParam];
         }
         $this->clientOptions = $options;
     }
