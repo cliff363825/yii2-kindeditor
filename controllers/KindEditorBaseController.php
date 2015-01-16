@@ -9,6 +9,7 @@ use yii\web\Controller;
 class KindEditorBaseController extends Controller
 {
     /**
+     * csrf cookie param
      * @var string
      */
     public $csrfCookieParam = '_csrfCookie';
@@ -42,6 +43,9 @@ class KindEditorBaseController extends Controller
      */
     private $_subDir;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -50,10 +54,17 @@ class KindEditorBaseController extends Controller
             Yii::$app->session->open();
         }
         if (Yii::$app->request->enableCsrfCookie) {
-            $_COOKIE[Yii::$app->request->csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
+            // fix bug #1: 400 bad request [by fdddf]
+            if (!isset($_COOKIE[Yii::$app->request->csrfParam])) {
+                $_COOKIE[Yii::$app->request->csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
+            }
         }
     }
 
+    /**
+     * File Manage Action
+     * @throws \yii\base\ExitException
+     */
     public function actionFilemanager()
     {
         //根目录路径，可以指定绝对路径，比如 /var/www/attached/
@@ -156,6 +167,10 @@ class KindEditorBaseController extends Controller
         Yii::$app->end();
     }
 
+    /**
+     * File Upload Action
+     * @throws \yii\base\ExitException
+     */
     public function actionUpload()
     {
         //文件保存目录路径

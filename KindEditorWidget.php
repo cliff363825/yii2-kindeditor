@@ -19,6 +19,7 @@ class KindEditorWidget extends InputWidget
     public $clientOptions = [];
 
     /**
+     * csrf cookie param
      * @var string
      */
     public $csrfCookieParam = '_csrfCookie';
@@ -28,6 +29,9 @@ class KindEditorWidget extends InputWidget
      */
     public $render = true;
 
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if ($this->render) {
@@ -40,6 +44,9 @@ class KindEditorWidget extends InputWidget
         $this->registerClientScript();
     }
 
+    /**
+     * register client scripts(css, javascript)
+     */
     public function registerClientScript()
     {
         $view = $this->getView();
@@ -122,6 +129,9 @@ KindEditor.ready(function(K) {
         $view->registerJs($js);
     }
 
+    /**
+     * client options init
+     */
     protected function initClientOptions()
     {
         // KindEditor optional parameters
@@ -195,9 +205,12 @@ KindEditor.ready(function(K) {
                 $options[$key] = $this->clientOptions[$key];
             }
         }
+        // $_POST['_csrf'] = ...
         $options['extraFileUploadParams'][Yii::$app->request->csrfParam] = Yii::$app->request->getCsrfToken();
+        // $_POST['PHPSESSID'] = ...
         $options['extraFileUploadParams'][Yii::$app->session->name] = Yii::$app->session->id;
         if (Yii::$app->request->enableCsrfCookie) {
+            // $_POST['_csrfCookie'] = ...
             $options['extraFileUploadParams'][$this->csrfCookieParam] = $_COOKIE[Yii::$app->request->csrfParam];
         }
         $this->clientOptions = $options;
