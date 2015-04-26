@@ -1,5 +1,4 @@
 <?php
-
 namespace cliff363825\kindeditor;
 
 use Yii;
@@ -12,8 +11,18 @@ class KindEditorWidget extends InputWidget
 {
     const PLUGIN_NAME = 'KindEditor';
 
+    const THEME_TYPE_DEFAULT = 'default';
+    const THEME_TYPE_QQ = 'qq';
+    const THEME_TYPE_SIMPLE = 'simple';
+
+    const LANG_TYPE_AR = 'ar';
+    const LANG_TYPE_EN = 'en';
+    const LANG_TYPE_KO = 'ko';
+    const LANG_TYPE_ZH_CN = 'zh_CN';
+    const LANG_TYPE_ZH_TW = 'zh_TW';
+
     /**
-     * KindEditor Options
+     * KindEditor client options
      * @var array
      */
     public $clientOptions = [];
@@ -52,12 +61,12 @@ class KindEditorWidget extends InputWidget
         $view = $this->getView();
         $this->initClientOptions();
         $asset = KindEditorAsset::register($view);
-        $themeType = isset($this->clientOptions['themeType']) ? $this->clientOptions['themeType'] : 'default';
-        if ($themeType != 'default') {
+        $themeType = isset($this->clientOptions['themeType']) ? $this->clientOptions['themeType'] : self::THEME_TYPE_DEFAULT;
+        if ($themeType != self::THEME_TYPE_DEFAULT) {
             $view->registerCssFile($asset->baseUrl . "/themes/{$themeType}/{$themeType}.css", ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
         }
         $preJs = '';
-        if ($themeType == 'qq') {
+        if ($themeType == self::THEME_TYPE_QQ) {
             $this->clientOptions['items'] = [
                 'bold', 'italic', 'underline', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'plug-align', 'plug-order', 'plug-indent', 'link',
             ];
@@ -110,7 +119,7 @@ K.each({
     });
 });
 ";
-        } elseif ($themeType == 'simple') {
+        } elseif ($themeType == self::THEME_TYPE_SIMPLE) {
             $this->clientOptions['items'] = [
                 'fontname', 'fontsize', '|',
                 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'removeformat', '|',
@@ -134,77 +143,7 @@ KindEditor.ready(function(K) {
      */
     protected function initClientOptions()
     {
-        // KindEditor optional parameters
-        $params = [
-            'width',
-            'height',
-            'minWidth',
-            'minHeight',
-            'items',
-            'noDisableItems',
-            'filterMode',
-            'htmlTags',
-            'wellFormatMode',
-            'resizeType',
-            'themeType',
-            'langType',
-            'designMode',
-            'fullscreenMode',
-            'basePath',
-            'themesPath',
-            'pluginsPath',
-            'langPath',
-            'minChangeSize',
-            'urlType',
-            'newlineTag',
-            'pasteType',
-            'dialogAlignType',
-            'shadowMode',
-            'zIndex',
-            'useContextmenu',
-            'syncType',
-            'indentChar',
-            'cssPath',
-            'cssData',
-            'bodyClass',
-            'colorTable',
-            'afterCreate',
-            'afterChange',
-            'afterTab',
-            'afterFocus',
-            'afterBlur',
-            'afterUpload',
-            'uploadJson',
-            'fileManagerJson',
-            'allowPreviewEmoticons',
-            'allowImageUpload',
-            'allowFlashUpload',
-            'allowMediaUpload',
-            'allowFileUpload',
-            'allowFileManager',
-            'fontSizeTable',
-            'imageTabIndex',
-            'formatUploadUrl',
-            'fullscreenShortcut',
-            'extraFileUploadParams',
-            'filePostName',
-            'fillDescAfterUploadImage',
-            'afterSelectFile',
-            'pagebreakHtml',
-            'allowImageRemote',
-            'autoHeightMode',
-        ];
-        $options = [];
-        $options['width'] = '680px';
-        $options['height'] = '350px';
-        $options['themeType'] = 'default';
-        $options['langType'] = 'zh_CN';
-        $options['afterChange'] = new JsExpression('function(){this.sync();}');
-        foreach ($params as $key) {
-            if (isset($this->clientOptions[$key])) {
-                $options[$key] = $this->clientOptions[$key];
-            }
-        }
+        $options = array_merge($this->defaultOptions(), $this->clientOptions);
         // $_POST['_csrf'] = ...
         $options['extraFileUploadParams'][Yii::$app->request->csrfParam] = Yii::$app->request->getCsrfToken();
         // $_POST['PHPSESSID'] = ...
@@ -214,5 +153,20 @@ KindEditor.ready(function(K) {
             $options['extraFileUploadParams'][$this->csrfCookieParam] = $_COOKIE[Yii::$app->request->csrfParam];
         }
         $this->clientOptions = $options;
+    }
+
+    /**
+     * default client options
+     * @return array
+     */
+    protected function defaultOptions()
+    {
+        return [
+            'width' => '680px',
+            'height' => '350px',
+            'themeType' => self::THEME_TYPE_DEFAULT,
+            'langType' => self::LANG_TYPE_ZH_CN,
+            'afterChange' => new JsExpression('function(){this.sync();}'),
+        ];
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-namespace cliff363825\kindeditor\controllers;
+namespace cliff363825\kindeditor;
 
 use Yii;
-use yii\helpers\FileHelper;
 use yii\web\Controller;
 
-class KindEditorBaseController extends Controller
+class KindEditorController extends Controller
 {
     /**
      * csrf cookie param
@@ -54,9 +53,10 @@ class KindEditorBaseController extends Controller
             Yii::$app->session->open();
         }
         if (Yii::$app->request->enableCsrfCookie) {
+            $csrfParam = Yii::$app->request->csrfParam;
             // fix bug #1: 400 bad request [by fdddf]
-            if (!isset($_COOKIE[Yii::$app->request->csrfParam])) {
-                $_COOKIE[Yii::$app->request->csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
+            if (!isset($_COOKIE[$csrfParam])) {
+                $_COOKIE[$csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
             }
         }
     }
@@ -84,7 +84,7 @@ class KindEditorBaseController extends Controller
             $root_url .= $dir_name . "/";
         }
         if (!is_dir($root_path)) {
-            FileHelper::createDirectory($root_path);
+            mkdir($root_path, 0775, true);
         }
         //根据path参数，设置各路径和URL
         if (empty($_GET['path'])) {
@@ -269,7 +269,7 @@ class KindEditorBaseController extends Controller
                 $save_url .= $ymd . "/";
             }
             if (!is_dir($save_path)) {
-                FileHelper::createDirectory($save_path);
+                mkdir($save_path, 0775, true);
             }
             //新文件名
             $new_file_name = date("YmdHis") . '_' . rand(10000, 99999) . '.' . $file_ext;
