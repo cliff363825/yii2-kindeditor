@@ -9,6 +9,9 @@ use yii\widgets\InputWidget;
 
 class KindEditorWidget extends InputWidget
 {
+    /**
+     * The name of this widget.
+     */
     const PLUGIN_NAME = 'KindEditor';
 
     const THEME_TYPE_DEFAULT = 'default';
@@ -22,13 +25,13 @@ class KindEditorWidget extends InputWidget
     const LANG_TYPE_ZH_TW = 'zh_TW';
 
     /**
-     * KindEditor client options
-     * @var array
+     * @var array the KindEditor plugin options.
+     * @see http://kindeditor.net/doc.php
      */
     public $clientOptions = [];
 
     /**
-     * csrf cookie param
+     * csrf cookie parameter
      * @var string
      */
     public $csrfCookieParam = '_csrfCookie';
@@ -43,6 +46,7 @@ class KindEditorWidget extends InputWidget
      */
     public function run()
     {
+        $this->registerClientScript();
         if ($this->render) {
             if ($this->hasModel()) {
                 echo Html::activeTextarea($this->model, $this->attribute, $this->options);
@@ -50,11 +54,10 @@ class KindEditorWidget extends InputWidget
                 echo Html::textarea($this->name, $this->value, $this->options);
             }
         }
-        $this->registerClientScript();
     }
 
     /**
-     * register client scripts(css, javascript)
+     * Registers the needed client script and options.
      */
     public function registerClientScript()
     {
@@ -139,7 +142,7 @@ KindEditor.ready(function(K) {
     }
 
     /**
-     * client options init
+     * Initializes client options
      */
     protected function initClientOptions()
     {
@@ -156,7 +159,7 @@ KindEditor.ready(function(K) {
     }
 
     /**
-     * default client options
+     * Default client options
      * @return array
      */
     protected function defaultOptions()
