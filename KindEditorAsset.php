@@ -3,6 +3,10 @@ namespace cliff363825\kindeditor;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class KindEditorAsset
+ * @package cliff363825\kindeditor
+ */
 class KindEditorAsset extends AssetBundle
 {
     public $sourcePath = '@cliff363825/kindeditor/assets';

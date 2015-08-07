@@ -7,6 +7,10 @@ use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\widgets\InputWidget;
 
+/**
+ * Class KindEditorWidget
+ * @package cliff363825\kindeditor
+ */
 class KindEditorWidget extends InputWidget
 {
     /**
@@ -64,7 +68,7 @@ class KindEditorWidget extends InputWidget
         $view = $this->getView();
         $this->initClientOptions();
         $asset = KindEditorAsset::register($view);
-        $themeType = isset($this->clientOptions['themeType']) ? $this->clientOptions['themeType'] : self::THEME_TYPE_DEFAULT;
+        $themeType = !empty($this->clientOptions['themeType']) ? $this->clientOptions['themeType'] : self::THEME_TYPE_DEFAULT;
         if ($themeType != self::THEME_TYPE_DEFAULT) {
             $view->registerCssFile($asset->baseUrl . "/themes/{$themeType}/{$themeType}.css", ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
         }
