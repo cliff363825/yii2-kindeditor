@@ -33,10 +33,6 @@ class KindEditorWidget extends InputWidget
      * @see http://kindeditor.net/doc.php
      */
     public $clientOptions = [];
-    /**
-     * @var boolean
-     */
-    public $render = true;
 
     /**
      * @inheritdoc
@@ -44,12 +40,10 @@ class KindEditorWidget extends InputWidget
     public function run()
     {
         $this->registerClientScript();
-        if ($this->render) {
-            if ($this->hasModel()) {
-                echo Html::activeTextarea($this->model, $this->attribute, $this->options);
-            } else {
-                echo Html::textarea($this->name, $this->value, $this->options);
-            }
+        if ($this->hasModel()) {
+            echo Html::activeTextarea($this->model, $this->attribute, $this->options);
+        } else {
+            echo Html::textarea($this->name, $this->value, $this->options);
         }
     }
 
