@@ -14,11 +14,6 @@ use yii\base\Action;
 class KindEditorUploadAction extends Action
 {
     /**
-     * the name of the token used to prevent CSRF.
-     * @var string
-     */
-    public $csrfCookieParam = '_csrfCookie';
-    /**
      * a list of file name extensions that are allowed to be uploaded.
      * 定义允许上传的文件扩展名
      * @var array
@@ -46,28 +41,6 @@ class KindEditorUploadAction extends Action
      * @var int
      */
     private $_maxSize = 1000000;
-
-    /**
-     * @inheritDoc
-     */
-    protected function beforeRun()
-    {
-        if (isset($_POST[Yii::$app->session->name])) {
-            $sessionId = $_POST[Yii::$app->session->name];
-            if (preg_match('/^[a-zA-Z0-9,-]{1,128}$/', $sessionId)) {
-                Yii::$app->session->setId($sessionId);
-                Yii::$app->session->open();
-            }
-        }
-        if (Yii::$app->request->enableCsrfCookie) {
-            $csrfParam = Yii::$app->request->csrfParam;
-            // fix bug #1: 400 bad request [by fdddf]
-            if (isset($_POST[$this->csrfCookieParam]) && !isset($_COOKIE[$csrfParam])) {
-                $_COOKIE[$csrfParam] = $_POST[$this->csrfCookieParam];
-            }
-        }
-        return parent::beforeRun();
-    }
 
     /**
      * Runs the action
@@ -188,6 +161,9 @@ class KindEditorUploadAction extends Action
         }
     }
 
+    /**
+     * @param string $msg
+     */
     protected function alert($msg)
     {
         header('Content-type: text/html; charset=UTF-8');

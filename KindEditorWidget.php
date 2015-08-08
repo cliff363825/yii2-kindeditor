@@ -33,13 +33,6 @@ class KindEditorWidget extends InputWidget
      * @see http://kindeditor.net/doc.php
      */
     public $clientOptions = [];
-
-    /**
-     * csrf cookie parameter
-     * @var string
-     */
-    public $csrfCookieParam = '_csrfCookie';
-
     /**
      * @var boolean
      */
@@ -155,10 +148,6 @@ KindEditor.ready(function(K) {
         $options['extraFileUploadParams'][Yii::$app->request->csrfParam] = Yii::$app->request->getCsrfToken();
         // $_POST['PHPSESSID'] = ...
         $options['extraFileUploadParams'][Yii::$app->session->name] = Yii::$app->session->id;
-        if (Yii::$app->request->enableCsrfCookie) {
-            // $_POST['_csrfCookie'] = ...
-            $options['extraFileUploadParams'][$this->csrfCookieParam] = $_COOKIE[Yii::$app->request->csrfParam];
-        }
         $this->clientOptions = $options;
     }
 
