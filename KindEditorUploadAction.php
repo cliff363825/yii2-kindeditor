@@ -30,14 +30,6 @@ class KindEditorUploadAction extends Action
         'file' => ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'],
     ];
     /**
-     * @var string|\Closure
-     */
-    public $subDirCallback;
-    /**
-     * @var string|\Closure
-     */
-    public $filenameCallback;
-    /**
      * the file path used to save the uploaded file
      * 文件保存目录路径
      * @var string
@@ -174,32 +166,14 @@ class KindEditorUploadAction extends Action
                 $save_path .= $dir_name . "/";
                 $save_url .= $dir_name . "/";
             }
-            if ($this->subDirCallback !== null) {
-                if ($this->subDirCallback instanceof \Closure) {
-                    $ymd = call_user_func($this->subDirCallback);
-                } else {
-                    $ymd = (string)$this->subDirCallback;
-                }
-            }
-            if (empty($ymd)) {
-                $ymd = date("Ym/d");
-            }
+            $ymd = date("Ym/d");
             $save_path .= $ymd . "/";
             $save_url .= $ymd . "/";
             if (!file_exists($save_path)) {
                 mkdir($save_path, 0777, true);
             }
             //新文件名
-            if ($this->filenameCallback !== null) {
-                if ($this->filenameCallback instanceof \Closure) {
-                    $new_file_name = call_user_func($this->filenameCallback);
-                } else {
-                    $new_file_name = (string)$this->filenameCallback;
-                }
-            }
-            if (empty($new_file_name)) {
-                $new_file_name = date("YmdHis") . '_' . rand(10000, 99999) . '.' . $file_ext;
-            }
+            $new_file_name = date("YmdHis") . '_' . rand(10000, 99999) . '.' . $file_ext;
             //移动文件
             $file_path = $save_path . $new_file_name;
             if (move_uploaded_file($tmp_name, $file_path) === false) {
