@@ -9,7 +9,7 @@ use yii\base\Action;
  * @package cliff363825\kindeditor
  * @property string $savePath
  * @property string $saveUrl
- * @property int maxSize
+ * @property int $maxSize
  */
 class KindEditorUploadAction extends Action
 {
