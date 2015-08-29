@@ -7,11 +7,20 @@ use yii\base\Action;
 /**
  * Class KindEditorFileManagerAction
  * @package cliff363825\kindeditor
- * @property string $rootPath
- * @property string $rootUrl
  */
 class KindEditorFileManagerAction extends Action
 {
+    /**
+     * the root directory of the file manager.
+     * 根目录路径，可以指定绝对路径，比如 /var/www/attached/
+     * @var string
+     */
+    public $rootPath = '@webroot/uploads';
+    /**
+     * 根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
+     * @var string
+     */
+    public $rootUrl = '@web/uploads';
     /**
      * a list of file name extensions that are allowed to be uploaded.
      * 定义允许上传的文件扩展名
@@ -29,17 +38,6 @@ class KindEditorFileManagerAction extends Action
      * @var string
      */
     public $order = 'name';
-    /**
-     * the root directory of the file manager.
-     * 根目录路径，可以指定绝对路径，比如 /var/www/attached/
-     * @var string
-     */
-    private $_rootPath = '@webroot/uploads';
-    /**
-     * 根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-     * @var string
-     */
-    private $_rootUrl = '@web/uploads';
 
     /**
      * Runs the action
@@ -47,15 +45,14 @@ class KindEditorFileManagerAction extends Action
     public function run()
     {
         //根目录路径，可以指定绝对路径，比如 /var/www/attached/
-        $root_path = $this->getRootPath() . '/';
+        $root_path = rtrim(Yii::getAlias($this->rootPath), '\\/') . '/';
         //根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-        $root_url = $this->getRootUrl() . '/';
+        $root_url = rtrim(Yii::getAlias($this->rootUrl), '\\/') . '/';
         if (!file_exists($root_path)) {
-            mkdir($root_path, 0777, true);
+            mkdir($root_path, 0755, true);
         }
         //图片扩展名
         $ext_arr = !empty($this->extensions['image']) ? $this->extensions['image'] : [];
-
         //目录名
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
         if ($dir_name !== '' && !isset($this->extensions[$dir_name])) {
@@ -69,7 +66,6 @@ class KindEditorFileManagerAction extends Action
                 mkdir($root_path);
             }
         }
-
         //根据path参数，设置各路径和URL
         if (empty($_GET['path'])) {
             $current_path = realpath($root_path) . '/';
@@ -85,7 +81,6 @@ class KindEditorFileManagerAction extends Action
         //echo realpath($root_path);
         //排序形式，name or size or type
         $this->order = empty($_GET['order']) ? 'name' : strtolower($_GET['order']);
-
         //不允许使用..移动到上一级目录
         if (preg_match('/\.\./', $current_path)) {
             echo 'Access is not allowed.';
@@ -101,7 +96,6 @@ class KindEditorFileManagerAction extends Action
             echo 'Directory does not exist.';
             exit;
         }
-
         //遍历目录取得文件信息
         $file_list = array();
         if ($handle = opendir($current_path)) {
@@ -130,9 +124,7 @@ class KindEditorFileManagerAction extends Action
             }
             closedir($handle);
         }
-
         usort($file_list, [$this, 'cmp_func']);
-
         $result = [];
         //相对于根目录的上一级目录
         $result['moveup_dir_path'] = $moveup_dir_path;
@@ -144,7 +136,6 @@ class KindEditorFileManagerAction extends Action
         $result['total_count'] = count($file_list);
         //文件列表数组
         $result['file_list'] = $file_list;
-
         //输出JSON字符串
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($result);
@@ -179,37 +170,5 @@ class KindEditorFileManagerAction extends Action
                 return strcmp($a['filename'], $b['filename']);
             }
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootPath()
-    {
-        return rtrim(Yii::getAlias($this->_rootPath), '\\/');
-    }
-
-    /**
-     * @param string $rootPath
-     */
-    public function setRootPath($rootPath)
-    {
-        $this->_rootPath = $rootPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootUrl()
-    {
-        return rtrim(Yii::getAlias($this->_rootUrl), '\\/');
-    }
-
-    /**
-     * @param string $rootUrl
-     */
-    public function setRootUrl($rootUrl)
-    {
-        $this->_rootUrl = $rootUrl;
     }
 }
