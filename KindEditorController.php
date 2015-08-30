@@ -17,15 +17,11 @@ class KindEditorController extends Controller
     {
         return [
             'upload' => [
-                'class' => 'cliff363825\kindeditor\KindEditorUploadAction',
-                'savePath' => '@webroot/uploads',
-                'saveUrl' => '@web/uploads',
+                'class' => '\cliff363825\kindeditor\KindEditorUploadAction',
                 'maxSize' => 2097152,
             ],
             'filemanager' => [
-                'class' => 'cliff363825\kindeditor\KindEditorFileManagerAction',
-                'rootPath' => '@webroot/uploads',
-                'rootUrl' => '@web/uploads',
+                'class' => '\cliff363825\kindeditor\KindEditorFileManagerAction',
             ],
         ];
     }
