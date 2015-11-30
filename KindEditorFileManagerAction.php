@@ -63,7 +63,7 @@ class KindEditorFileManagerAction extends Action
             $root_path .= $dir_name . "/";
             $root_url .= $dir_name . "/";
             if (!file_exists($root_path)) {
-                mkdir($root_path);
+                mkdir($root_path, 0755);
             }
         }
         //根据path参数，设置各路径和URL
