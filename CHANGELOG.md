@@ -13,6 +13,8 @@ v1.0.5
 - For the future, please use `KindEditorWidget::LANG_TYPE_ZH_CN` or `LANG_TYPE_ZH_TW` to avoid this problem.
 - **The default value of `KindEditorUploadAction->savePath` is changed to `uploads` now, NOT `@webroot/uploads`.**
 - Add a new property `basePath` and the default value is `@webroot`.
+- **Remove property `KindEditorUploadAction->saveUrl`.**
+- Add a new property `baseUrl` and the default value is `@web`.
 
 
 v1.0.4

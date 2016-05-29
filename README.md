@@ -72,6 +72,10 @@ Notice
 
 >Add a new property `basePath` and the default value is `@webroot`.
 
+- **Remove property `KindEditorUploadAction->saveUrl`.**
+
+>Add a new property `baseUrl` and the default value is `@web`.
+
 see the [change log](https://github.com/cliff363825/yii2-kindeditor/blob/master/CHANGELOG.md)
 
 Documentation
