@@ -1,7 +1,6 @@
 KindEditor Widget for Yii2
 ==========================
 **一言不合就飙洋文系列**
-KindEditor Widget for Yii2
 
 Installation
 ------------
