@@ -62,11 +62,15 @@ Once the extension is installed, simply use it in your code by  :
 
 Notice
 ------
-**In version v1.0.5 or later, the language packages was renamed. zh_CN -> zh-CN, zh_TW -> zh-TW.**
+- **In version v1.0.5 or later, the language packages was renamed. zh_CN -> zh-CN, zh_TW -> zh-TW.**
 
-You may have to modify your code in your project if `KindEditorWidget->clientOptions->langType` was set `zh_CN` or `zh_TW`.
+>You may have to modify your code in your project if `KindEditorWidget->clientOptions->langType` was set `zh_CN` or `zh_TW`.
 
-说简单点，就是你要把langType是`zh_CN`、`zh_TW`对应改成`zh-CN`、`zh-TW`。
+>说简单点，就是你要把langType是`zh_CN`、`zh_TW`对应改成`zh-CN`、`zh-TW`。
+
+- **The default value of `KindEditorUploadAction->savePath` is changed to `uploads` now, NOT `@webroot/uploads`.**
+
+>Add a new property `basePath` and the default value is `@webroot`.
 
 see the [change log](https://github.com/cliff363825/yii2-kindeditor/blob/master/CHANGELOG.md)
 
