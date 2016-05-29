@@ -53,6 +53,7 @@ class KindEditorFileManagerAction extends Action
         }
         //图片扩展名
         $ext_arr = !empty($this->extensions['image']) ? $this->extensions['image'] : [];
+
         //目录名
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
         if ($dir_name !== '' && !isset($this->extensions[$dir_name])) {
@@ -66,6 +67,7 @@ class KindEditorFileManagerAction extends Action
                 mkdir($root_path, 0755);
             }
         }
+
         //根据path参数，设置各路径和URL
         if (empty($_GET['path'])) {
             $current_path = realpath($root_path) . '/';
@@ -81,6 +83,7 @@ class KindEditorFileManagerAction extends Action
         //echo realpath($root_path);
         //排序形式，name or size or type
         $this->order = empty($_GET['order']) ? 'name' : strtolower($_GET['order']);
+
         //不允许使用..移动到上一级目录
         if (preg_match('/\.\./', $current_path)) {
             echo 'Access is not allowed.';
@@ -96,6 +99,7 @@ class KindEditorFileManagerAction extends Action
             echo 'Directory does not exist.';
             exit;
         }
+
         //遍历目录取得文件信息
         $file_list = array();
         if ($handle = opendir($current_path)) {
@@ -124,7 +128,9 @@ class KindEditorFileManagerAction extends Action
             }
             closedir($handle);
         }
+
         usort($file_list, [$this, 'cmp_func']);
+
         $result = [];
         //相对于根目录的上一级目录
         $result['moveup_dir_path'] = $moveup_dir_path;
@@ -136,6 +142,7 @@ class KindEditorFileManagerAction extends Action
         $result['total_count'] = count($file_list);
         //文件列表数组
         $result['file_list'] = $file_list;
+
         //输出JSON字符串
         header('Content-type: application/json; charset=UTF-8');
         echo json_encode($result);

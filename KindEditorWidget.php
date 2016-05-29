@@ -25,8 +25,9 @@ class KindEditorWidget extends InputWidget
     const LANG_TYPE_AR = 'ar';
     const LANG_TYPE_EN = 'en';
     const LANG_TYPE_KO = 'ko';
-    const LANG_TYPE_ZH_CN = 'zh_CN';
-    const LANG_TYPE_ZH_TW = 'zh_TW';
+    const LANG_TYPE_RU = 'ru';
+    const LANG_TYPE_ZH_CN = 'zh-CN';
+    const LANG_TYPE_ZH_TW = 'zh-TW';
 
     /**
      * @var array the KindEditor plugin options.
@@ -62,7 +63,17 @@ class KindEditorWidget extends InputWidget
         $preJs = '';
         if ($themeType == self::THEME_TYPE_QQ) {
             $this->clientOptions['items'] = [
-                'bold', 'italic', 'underline', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'plug-align', 'plug-order', 'plug-indent', 'link',
+                'bold',
+                'italic',
+                'underline',
+                'fontname',
+                'fontsize',
+                'forecolor',
+                'hilitecolor',
+                'plug-align',
+                'plug-order',
+                'plug-indent',
+                'link',
             ];
             $preJs = "
 K.each({
@@ -115,10 +126,25 @@ K.each({
 ";
         } elseif ($themeType == self::THEME_TYPE_SIMPLE) {
             $this->clientOptions['items'] = [
-                'fontname', 'fontsize', '|',
-                'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'removeformat', '|',
-                'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', '|',
-                'emoticons', 'image', 'link',
+                'fontname',
+                'fontsize',
+                '|',
+                'forecolor',
+                'hilitecolor',
+                'bold',
+                'italic',
+                'underline',
+                'removeformat',
+                '|',
+                'justifyleft',
+                'justifycenter',
+                'justifyright',
+                'insertorderedlist',
+                'insertunorderedlist',
+                '|',
+                'emoticons',
+                'image',
+                'link',
             ];
         }
         $view->registerJsFile($asset->baseUrl . '/lang/' . $this->clientOptions['langType'] . '.js', ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
@@ -139,9 +165,9 @@ KindEditor.ready(function(K) {
     {
         $options = array_merge($this->defaultOptions(), $this->clientOptions);
         // $_POST['_csrf'] = ...
-        $options['extraFileUploadParams'][Yii::$app->request->csrfParam] = Yii::$app->request->getCsrfToken();
+        $options['extraFileUploadParams'][Yii::$app->getRequest()->csrfParam] = Yii::$app->getRequest()->getCsrfToken();
         // $_POST['PHPSESSID'] = ...
-        $options['extraFileUploadParams'][Yii::$app->session->name] = Yii::$app->session->id;
+        $options['extraFileUploadParams'][Yii::$app->getSession()->getName()] = Yii::$app->getSession()->getId();
         $this->clientOptions = $options;
     }
 

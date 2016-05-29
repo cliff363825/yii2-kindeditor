@@ -50,15 +50,19 @@ class KindEditorBaseController extends KindEditorController
     public function init()
     {
         parent::init();
-        if (($sessionId = Yii::$app->request->post(Yii::$app->session->name)) !== null) {
-            Yii::$app->session->setId($sessionId);
-            Yii::$app->session->open();
+        // $sessionId = $_POST['PHPSESSID'];
+        $sessionId = Yii::$app->getRequest()->post(Yii::$app->getSession()->getName());
+        if ($sessionId) {
+            Yii::$app->getSession()->close();
+            Yii::$app->getSession()->setId($sessionId);
+            Yii::$app->getSession()->open();
         }
-        if (Yii::$app->request->enableCsrfCookie) {
-            $csrfParam = Yii::$app->request->csrfParam;
+        if (Yii::$app->getRequest()->enableCsrfCookie) {
+            $csrfParam = Yii::$app->getRequest()->csrfParam;
             // fix bug #1: 400 bad request [by fdddf]
             if (!isset($_COOKIE[$csrfParam])) {
-                $_COOKIE[$csrfParam] = Yii::$app->request->post($this->csrfCookieParam);
+                // $_COOKIE['_csrf'] = $_POST['_csrfCookie'];
+                $_COOKIE[$csrfParam] = Yii::$app->getRequest()->post($this->csrfCookieParam);
             }
         }
     }
@@ -74,7 +78,7 @@ class KindEditorBaseController extends KindEditorController
         //根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
         $root_url = $this->getUploadUrl() . '/';
         if (!file_exists($root_path)) {
-            mkdir($root_path, 0777, true);
+            mkdir($root_path, 0755, true);
         }
         //图片扩展名
         $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
@@ -89,7 +93,7 @@ class KindEditorBaseController extends KindEditorController
             $root_path .= $dir_name . "/";
             $root_url .= $dir_name . "/";
             if (!file_exists($root_path)) {
-                mkdir($root_path);
+                mkdir($root_path, 0755);
             }
         }
 
@@ -194,10 +198,7 @@ class KindEditorBaseController extends KindEditorController
         //最大文件大小
         $max_size = $this->getMaxSize();
 
-        if (!file_exists($save_path)) {
-            mkdir($save_path, 0777, true);
-        }
-        $save_path = realpath($save_path) . '/';
+        //$save_path = realpath($save_path) . '/';
 
         //PHP上传失败
         if (!empty($_FILES['imgFile']['error'])) {
@@ -283,7 +284,7 @@ class KindEditorBaseController extends KindEditorController
                 $save_url .= $ymd . "/";
             }
             if (!file_exists($save_path)) {
-                mkdir($save_path, 0777, true);
+                mkdir($save_path, 0755, true);
             }
             //新文件名
             $new_file_name = date("YmdHis") . '_' . rand(10000, 99999) . '.' . $file_ext;
@@ -405,6 +406,6 @@ class KindEditorBaseController extends KindEditorController
      */
     public function setMaxSize($maxSize)
     {
-        $this->_maxSize = (int)$maxSize;
+        $this->_maxSize = intval($maxSize);
     }
 }

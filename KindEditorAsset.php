@@ -22,9 +22,9 @@ class KindEditorAsset extends AssetBundle
     {
         parent::init();
         if (YII_DEBUG) {
-            $this->js[] = 'kindeditor.js';
+            $this->js[] = 'kindeditor-all.js';
         } else {
-            $this->js[] = 'kindeditor-min.js';
+            $this->js[] = 'kindeditor-all-min.js';
         }
     }
 }
