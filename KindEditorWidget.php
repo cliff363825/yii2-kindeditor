@@ -58,7 +58,7 @@ class KindEditorWidget extends InputWidget
         $asset = KindEditorAsset::register($view);
         $themeType = !empty($this->clientOptions['themeType']) ? $this->clientOptions['themeType'] : self::THEME_TYPE_DEFAULT;
         if ($themeType != self::THEME_TYPE_DEFAULT) {
-            $view->registerCssFile($asset->baseUrl . "/themes/{$themeType}/{$themeType}.css", ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
+            $view->registerCssFile($asset->baseUrl . "/themes/{$themeType}/{$themeType}.css", ['depends' => 'cliff363825\kindeditor\KindEditorAsset']);
         }
         $preJs = '';
         if ($themeType == self::THEME_TYPE_QQ) {
@@ -147,7 +147,7 @@ K.each({
                 'link',
             ];
         }
-        $view->registerJsFile($asset->baseUrl . '/lang/' . $this->clientOptions['langType'] . '.js', ['depends' => '\cliff363825\kindeditor\KindEditorAsset']);
+        $view->registerJsFile($asset->baseUrl . '/lang/' . $this->clientOptions['langType'] . '.js', ['depends' => 'cliff363825\kindeditor\KindEditorAsset']);
         $id = $this->options['id'];
         $varName = self::PLUGIN_NAME . '_' . str_replace('-', '_', $id);
         $js = "
