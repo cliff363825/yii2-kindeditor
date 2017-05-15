@@ -1,11 +1,11 @@
 /*******************************************************************************
 * KindEditor - WYSIWYG HTML Editor for Internet
-* Copyright (C) 2006-2016 kindsoft.net
+* Copyright (C) 2006-2017 kindsoft.net
 *
 * @author Roddy <luolonghao@gmail.com>
 * @website http://www.kindsoft.net/
 * @licence http://www.kindsoft.net/license.php
-* @version 4.1.11 (2016-03-31)
+* @version 4.1.12 (2017-04-12)
 *******************************************************************************/
 (function (window, undefined) {
 	if (window.KindEditor) {
@@ -19,7 +19,7 @@ if (!window.console) {
 if (!console.log) {
 	console.log = function () {};
 }
-var _VERSION = '4.1.11 (2016-03-31)',
+var _VERSION = '4.1.12 (2017-04-12)',
 	_ua = navigator.userAgent.toLowerCase(),
 	_IE = _ua.indexOf('msie') > -1 && _ua.indexOf('opera') == -1,
 	_NEWIE = _ua.indexOf('msie') == -1 && _ua.indexOf('trident') > -1,
@@ -615,6 +615,7 @@ K.ctrl = _ctrl;
 K.ready = _ready;
 
 function _getCssList(css) {
+	css = css.replace(/&quot;/g, '"');
 	var list = {},
 		reg = /\s*([\w\-]+)\s*:([^;]*)(;|$)/g,
 		match;
@@ -3484,7 +3485,7 @@ _extend(KWidget, {
 		return self;
 	},
 	autoPos : function(width, height) {
-		var self = this,
+		var x, y, self = this,
 			w = _removeUnit(width) || 0,
 			h = _removeUnit(height) || 0,
 			scrollPos = _getScrollPos();
@@ -5214,7 +5215,7 @@ KEditor.prototype = {
 		}
 		if (height) {
 			height = _removeUnit(height);
-			editHeight = _removeUnit(height) - self.toolbar.div.height() - self.statusbar.height();
+			var editHeight = _removeUnit(height) - self.toolbar.div.height() - self.statusbar.height();
 			editHeight = editHeight < self.minHeight ? self.minHeight : editHeight;
 			self.edit.setHeight(editHeight);
 			if (updateProp) {
@@ -5468,7 +5469,7 @@ KEditor.prototype = {
 function _editor(options) {
 	return new KEditor(options);
 }
-_instances = [];
+var _instances = [];
 function _create(expr, options) {
 	options = options || {};
 	options.basePath = _undef(options.basePath, K.basePath);
@@ -6338,6 +6339,9 @@ KindEditor.plugin('autoheight', function(K) {
 		body.style.overflowY = 'hidden';
 	}
 	function resetHeight() {
+		if(self.fullscreenMode){
+			return;
+		}
 		var edit = self.edit;
 		var body = edit.doc.body;
 		edit.iframe.height(minHeight);
@@ -6346,7 +6350,9 @@ KindEditor.plugin('autoheight', function(K) {
 	function init() {
 		minHeight = K.removeUnit(self.height);
 		self.edit.afterChange(resetHeight);
-		hideScroll();
+		if(!self.fullscreenMode){
+			hideScroll();
+		}
 		resetHeight();
 	}
 	if (self.isCreated) {
@@ -8191,6 +8197,7 @@ SWFUpload.completeURL = function(url) {
 	}
 	var currentURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port : "");
 	var indexSlash = window.location.pathname.lastIndexOf("/");
+	var path;
 	if (indexSlash <= 0) {
 		path = "/";
 	} else {
