@@ -151,9 +151,9 @@ K.each({
         $id = $this->options['id'];
         $varName = self::PLUGIN_NAME . '_' . str_replace('-', '_', $id);
         $js = "
-KindEditor.ready(function(K) {
+$(function() {
     {$preJs};
-    var {$varName} = K.create('#{$id}'," . Json::encode($this->clientOptions) . ");});
+    var {$varName} = KindEditor.create('#{$id}'," . Json::encode($this->clientOptions) . ");});
 ";
         $view->registerJs($js);
     }
