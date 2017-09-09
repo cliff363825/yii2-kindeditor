@@ -1,6 +1,17 @@
 Yii2 KindEditor Change Log
 ==========================
-**一言不合就飙洋文系列**
+
+v1.1.1
+-----------------------
+
+- remove `htm, html` unsafe file extensions from `KindEditorUploadAction`.
+
+
+v1.1.0
+-----------------------
+
+- Fixed asset dependents.
+- Update `KindEditor` version from 4.1.11 to 4.1.12.see the [change log](https://github.com/kindsoft/kindeditor/blob/master/changelog.txt). 
 
 
 v1.0.5

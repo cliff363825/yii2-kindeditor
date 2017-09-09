@@ -40,7 +40,7 @@ class KindEditorUploadAction extends Action
         'image' => ['gif', 'jpg', 'jpeg', 'png', 'bmp'],
         'flash' => ['swf', 'flv'],
         'media' => ['swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'],
-        'file' => ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'],
+        'file' => ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'txt', 'zip', 'rar', 'gz', 'bz2'],
     ];
     /**
      * the maximum number of bytes required for the uploaded file.
